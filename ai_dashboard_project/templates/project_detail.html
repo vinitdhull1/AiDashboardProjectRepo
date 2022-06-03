@@ -1,0 +1,227 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container p-3">
+  <h5 class="text-center">Project - {{ proj_name }}</h5>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link active"
+        id="home-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#home"
+        type="button"
+        role="tab"
+        aria-controls="home"
+        aria-selected="true"
+      >
+        {{ proj_name }} Activities
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="add_new_feature_tab"
+        data-bs-toggle="tab"
+        data-bs-target="#add_new_feature"
+        type="button"
+        role="tab"
+        aria-controls="home"
+        aria-selected="true"
+      >
+        Add Activities
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="add_new_tab"
+        data-bs-toggle="tab"
+        data-bs-target="#add_new"
+        type="button"
+        role="tab"
+        aria-controls="home"
+        aria-selected="true"
+      >
+        Add Activities from excel
+      </button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div
+      class="tab-pane fade show active"
+      id="home"
+      role="tabpanel"
+      aria-labelledby="home-tab"
+    >
+      <table
+        class="table border-start border-bottom border-end"
+        style="font-size: 1.7vh"
+      >
+        <thead>
+          <tr>
+            <th scope="col">Activities</th>
+            <th scope="col">Activity Start date</th>
+            <th scope="col">Activity End Date</th>
+            <th scope="col">Working Days</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if proj_activities %} {% for activity in proj_activities %}
+          <tr>
+            <td>{{ activity.activities }}</td>
+            <td>{{ activity.activity_start_date }}</td>
+            <td>{{ activity.activity_end_date }}</td>
+            <td>{{ activity.working_days }}</td>
+            <td>{{ activity.status }}</td>
+            <td>
+              <a
+                href="/edit-project-details/{{ activity.id }}"
+                onclick="return confirm('Are you sure? you want to edit these Detail?')"
+                >Edit</a
+              >
+              <a
+                href="/delete-project-feature/{{ activity.id }}"
+                onclick="return confirm('Are you sure? you want to delete these Detail?')"
+                >Delete</a
+              >
+            </td>
+          </tr>
+          {% endfor %} {% else %}
+          <tr>
+            <td><h4>There no feature added for this project yet!</h4></td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+    <div
+      class="tab-pane fade show"
+      id="add_new_feature"
+      role="tabpanel"
+      aria-labelledby="add_new_feature_tab"
+    >
+      <form
+        action="{% url 'project-detail' %}"
+        method="post"
+        class="p-2 border-start border-bottom border-end"
+      >
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="ProjectName" class="form-label">Project Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="proj_name"
+            value="{{ proj_name }}"
+            id="ProjectName"
+            readonly
+          />
+        </div>
+        <div class="mb-3">
+          <label for="ActivitiesName" class="form-label">Activities</label>
+          <input
+            type="text"
+            class="form-control"
+            name="activities"
+            id="ActivitiesName"
+            placeholder="Enter Activity"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="ActivityStartDate" class="form-label"
+            >Activity Start Date</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="activity_start_date"
+            id="ActivityStartDate"
+            placeholder="Enter activity start date"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="ActivityEndDate" class="form-label"
+            >Activity End Date</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="activity_end_date"
+            id="ActivityEndDate"
+            placeholder="Enter activity end date"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="WorkingDays" class="form-label">Working Days</label>
+          <input
+            type="text"
+            class="form-control"
+            name="working_days"
+            id="WorkingDays"
+            placeholder="Enter working days"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="Status" class="form-label">Status</label>
+          <input
+            type="text"
+            class="form-control"
+            name="status"
+            id="Status"
+            placeholder="Enter status"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <div
+      class="tab-pane fade show"
+      id="add_new"
+      role="tabpanel"
+      aria-labelledby="add_new_tab"
+    >
+      <form
+        action="{% url 'upload-projects' %}"
+        class="border-start border-bottom border-end"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+        <div class="modal-body">
+          <label for="project_name" class="form-label">Project Name</label>
+          <input
+            class="form-control mb-2"
+            type="text"
+            name="project_name"
+            id="project_name"
+            value="{{ proj_name }}"
+            readonly
+          />
+          <label for="formFile" class="form-label"
+            >Upload excel file for adding new features</label
+          >
+          <input
+            class="form-control"
+            type="file"
+            name="project_file"
+            id="formFile"
+          />
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Upload</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% for pro in proj %}
+<div class="container p-3">
+    <h4 class="text-center">Edit - {{ pro.proj_name  }}</h4>
+    <form action="/edit-projects/{{ pro.id }}" method="post" class="p-2 border">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="ProjectName" class="form-label">Enter Project</label>
+            <input type="text" class="form-control" name="proj_name" id="ProjectName" value="{{ pro.proj_name }}">
+        </div>
+        <div class="mb-3">
+            <label for="ProjectStatus" class="form-label">Project Status</label>
+            <input type="text" class="form-control" name="proj_status" id="ProjectStatus" value="{{ pro.proj_status }}">
+        </div>
+        <div class="mb-3">
+            <label for="StartingDate" class="form-label">Project Starting Date ({{ pro.proj_starting_date }})</label>
+            <input type="date" class="form-control" name="proj_starting_date" id="StartingDate" value="{{ pro.proj_starting_date }}">
+        </div>
+        <div class="mb-3">
+            <label for="LastUpdated" class="form-label">Project Last Updated Date ({{ pro.proj_last_updated }})</label>
+            <input type="date" class="form-control" name="proj_last_updated" id="LastUpdated" value="{{ pro.proj_last_updated }}">
+        </div>
+        <div class="mb-3">
+            <label for="BussinessPerson" class="form-label">Bussiness Person Involved</label>
+            <input type="text" class="form-control" name="proj_bussiness_person_involved" id="BussinessPerson"
+                value="{{ pro.proj_bussiness_person_involved }}">
+        </div>
+        <div class="mb-3">
+            <label for="DevelopersInvolve" class="form-label">Developers Involve</label>
+            <input type="text" class="form-control" name="proj_developers_involved" id="DevelopersInvolve"
+                value="{{ pro.proj_developers_involved }}">
+        </div>
+        <div class="mb-3">
+            <label for="ProjectUrl" class="form-label">Project URL</label>
+            <input type="text" class="form-control" name="proj_url" id="ProjectUrl" value="{{ pro.proj_url }}">
+        </div>
+        <div class="mb-3">
+            <label for="remarks" class="form-label">Enter remarks</label>
+            <textarea class="form-control" name="proj_remarks" id="remarks" rows="3">
+                {{ pro.proj_remarks }}
+            </textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endfor %}
+{% endblock %}

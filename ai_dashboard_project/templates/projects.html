@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container p-3">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+                role="tab" aria-controls="home" aria-selected="true">Project Detail</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="add-project-tab" data-bs-toggle="tab" data-bs-target="#add_projects"
+                type="button" role="tab" aria-controls="profile" aria-selected="false">Add New Project</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <table class="table  border-start border-bottom border-end" style="font-size: 1.7vh;">
+                <thead>
+                    <tr>
+                        <th scope="col">Project Name</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Starting Date</th>
+                        <th scope="col">Last updated</th>
+                        <th scope="col">Bussiness Person Involved</th>
+                        <th scope="col">Developers Involved</th>
+                        <th scope="col">URL</th>
+                        <th scope="col">Remarks</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for proj in proj_detail %}
+                    <tr>
+                        <th scope="row">
+                            <form action="{% url 'project-detail' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="proj_query" value="proj_query">
+                                <input type="hidden" name="proj_name" value="{{ proj.proj_name }}">
+                                <button type="submit" class="text-primary">{{ proj.proj_name }}</button>
+                            </form>
+                            </th>
+                        <td>{{ proj.proj_status }}</td>
+                        <td>{{ proj.proj_starting_date }}</td>
+                        <td>{{ proj.proj_last_updated }}</td>
+                        <td>{{ proj.proj_bussiness_person_involved }}</td>
+                        <td>{{ proj.proj_developers_involved }}</td>
+                        <td>{{ proj.proj_url }}</td>
+                        <td>{{ proj.proj_remarks }}</td>
+                        <td>
+                            <a href="/edit-projects/{{proj.id}}" onclick="return confirm('Are you sure? you want to edit these Detail?')">Edit</a>
+                            <a href="/delete-project/{{proj.id}}" onclick="return confirm('Are you sure? you want to delete these Detail?')">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade show" id="add_projects" role="tabpanel" aria-labelledby="add-project-tab">
+            <form action="{% url 'projects' %}" method="post" class="p-2 border-start border-bottom border-end">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="ProjectName" class="form-label">Enter Project</label>
+                    <input type="text" class="form-control" name="proj_name" id="ProjectName" placeholder="Enter project name">
+                </div>
+                <div class="mb-3">
+                    <label for="ProjectStatus" class="form-label">Project Status</label>
+                    <input type="text" class="form-control" name="proj_status" id="ProjectStatus" placeholder="Enter Project Status">
+                </div>
+                <div class="mb-3">
+                    <label for="StartingDate" class="form-label">Project Starting Date</label>
+                    <input type="date" class="form-control" name="proj_starting_date" id="StartingDate" placeholder="Enter Project Starting Date">
+                </div>
+                <div class="mb-3">
+                    <label for="LastUpdated" class="form-label">Project Last Updated Date</label>
+                    <input type="date" class="form-control" name="proj_last_updated" id="LastUpdated" placeholder="Enter Last Updated Date">
+                </div>
+                <div class="mb-3">
+                    <label for="BussinessPerson" class="form-label">Bussiness Person Involved</label>
+                    <input type="text" class="form-control" name="proj_bussiness_person_involved" id="BussinessPerson"
+                        placeholder="Enter the name of bussiness person involved">
+                </div>
+                <div class="mb-3">
+                    <label for="DevelopersInvolve" class="form-label">Developers Involve</label>
+                    <input type="text" class="form-control" name="proj_developers_involved" id="DevelopersInvolve"
+                        placeholder="Enter the name of Developers involve">
+                </div>
+                <div class="mb-3">
+                    <label for="ProjectUrl" class="form-label">Project URL</label>
+                    <input type="text" class="form-control" name="proj_url" id="ProjectUrl"
+                        placeholder="Enter the project url">
+                </div>
+                <div class="mb-3">
+                    <label for="remarks" class="form-label">Enter remarks</label>
+                    <textarea class="form-control" name="proj_remarks" id="remarks" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

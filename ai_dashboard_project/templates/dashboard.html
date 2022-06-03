@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container p-3">
+    <h5 class="text-center">AI TEAM WORKING REPORT - NOV</h5>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+                role="tab" aria-controls="home" aria-selected="true">Weekly Report</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="add_new_work_report_tab" data-bs-toggle="tab"
+                data-bs-target="#add_new_work_report" type="button" role="tab" aria-controls="home"
+                aria-selected="true">Create Report
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="add_new_tab" data-bs-toggle="tab" data-bs-target="#add_new" type="button"
+                role="tab" aria-controls="home" aria-selected="true">Create Report from excel</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="download_report_tab" data-bs-toggle="tab" data-bs-target="#download_report"
+                type="button" role="tab" aria-controls="home" aria-selected="true">Download report</button>
+        </li>
+
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <table class="table border-start border-bottom border-end" style="font-size: 1.7vh;">
+                <thead>
+                    <tr>
+                        <th scope="col">Sr. No.</th>
+                        <th scope="col">Emp Code</th>
+                        <th scope="col">Resource Name</th>
+                        <th scope="col">Skill</th>
+                        <th scope="col">Actual Hours</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Work Details</th>
+                        <th scope="col">Remark</th>
+                        <th scope="col">Clients</th>
+                        <th scope="col">Modify</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for report in reports %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ report.emp_code }}</td>
+                        <td>{{ report.resource_name }}</td>
+                        <td>{{ report.skill }}</td>
+                        <td>{{ report.actual_hours }}</td>
+                        <td>{{ report.date }}</td>
+                        <td>{{ report.work_details }}</td>
+                        <td>{{ report.remark }}</td>
+                        <td>{{ report.clients }}</td>
+                        <td>
+                            <a href="/edit-work-report/{{ report.id }}"
+                                onclick="return confirm('Are you sure? you want to edit these Detail?')">Edit</a>
+                            <a href="/delete-report/{{ report.id }}"
+                                onclick="return confirm('Are you sure? you want to delete these Detail?')">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade show" id="add_new_work_report" role="tabpanel"
+            aria-labelledby="add_new_work_report_tab">
+            <form action="{% url 'create-report' %}" method="post" class="p-2 border-start border-bottom border-end">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="EmpCode" class="form-label">Emp Code</label>
+                    <input type="text" class="form-control" id="EmpCode" name="emp_code" placeholder="Enter Emp Code">
+                </div>
+                <div class="mb-3">
+                    <label for="ResourceName" class="form-label">Resource Name</label>
+                    <input type="text" class="form-control" id="ResourceName" name="resource_name"
+                        placeholder="Enter Resource Name">
+                </div>
+                <div class="mb-3">
+                    <label for="Skill" class="form-label">Skill</label>
+                    <input type="text" class="form-control" id="Skill" name="skill" placeholder="Enter Skill">
+                </div>
+                <div class="mb-3">
+                    <label for="ActualHours" class="form-label">Actual Hours</label>
+                    <input type="text" class="form-control" id="ActualHours" name="actual_hours"
+                        placeholder="Enter Actual Hours">
+                </div>
+                <div class="mb-3">
+                    <label for="Date" class="form-label">Date</label>
+                    <input type="Date" class="form-control" id="Date" name="date" placeholder="Enter Date">
+                </div>
+                <div class="mb-3">
+                    <label for="WorkingDetail" class="form-label">Working Detail</label>
+                    <input type="text" class="form-control" id="WorkingDetail" name="work_details"
+                        placeholder="Enter Working Detail">
+                </div>
+                <div class="mb-3">
+                    <label for="Remark" class="form-label">Remark</label>
+                    <input type="text" class="form-control" id="Remark" name="remark" placeholder="Enter remark">
+                </div>
+                <div class="mb-3">
+                    <label for="Clients" class="form-label">Clients</label>
+                    <input type="text" class="form-control" id="Clients" name="clients" placeholder="Enter Clients">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="tab-pane fade show" id="add_new" role="tabpanel" aria-labelledby="add_new_tab">
+            <form action="{% url 'create-report' %}" class="border-start border-bottom border-end" method="post"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <label for="formFile" class="form-label">Upload excel file for creating report</label>
+                    <input class="form-control" type="file" name="report_file" id="formFile" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane fade show" id="download_report" role="tabpanel" aria-labelledby="download_report_tab">
+            <form action="{% url 'download-excel-data' %}" class="border-start border-bottom border-end" method="post"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <label for="SelectDate" class="form-label">Select Date</label>
+                    <select class="form-select" name="date" aria-label="Default select example">
+                        <option selected>Select Date</option>
+                        {% for report in reports %}
+                        {% ifchanged %}
+                        <option value="{{ report.date }}">{{ report.date }}</option>
+                        {% endifchanged %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

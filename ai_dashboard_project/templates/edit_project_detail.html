@@ -1,0 +1,82 @@
+{% extends 'base.html' %} {% block content %} {% for Activity in Activities %}
+<div class="container p-3">
+  <form
+    action="/edit-project-details/{{ Activity.id }}"
+    method="post"
+    class="p-2 border"
+  >
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="ProjectName" class="form-label">Project Name</label>
+      <input
+        type="text"
+        class="form-control"
+        name="proj_name"
+        value="{{ Activity.proj_name }}"
+        id="ProjectName"
+        readonly
+      />
+    </div>
+    <div class="mb-3">
+      <label for="ActivityName" class="form-label">Activity</label>
+      <input
+        type="text"
+        class="form-control"
+        name="activities"
+        id="ActivityName"
+        value="{{ Activity.activities }}"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="ActivityStartDate" class="form-label"
+        >Activity Start Date</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        name="activity_start_date"
+        id="ActivityStartDate"
+        value="{{ Activity.activity_start_date }}"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="ActivityEndDate" class="form-label">Activity End Date</label>
+      <input
+        type="text"
+        class="form-control"
+        name="activity_end_date"
+        id="ActivityEndDate"
+        value="{{ Activity.activity_end_date }}"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="WorkingDays" class="form-label">Working Days</label>
+      <input
+        type="text"
+        class="form-control"
+        name="working_days"
+        id="WorkingDays"
+        value="{{ Activity.working_days }}"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="Status" class="form-label">Status</label>
+      <input
+        type="text"
+        class="form-control"
+        name="status"
+        id="Status"
+        value="{{ Activity.status }}"
+      />
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      onclick="return confirm('Check carefully before submit?')"
+    >
+      Submit
+    </button>
+  </form>
+</div>
+{% endfor %} {% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% for report in reports %}
+<div class="container p-3">
+    <h5 class="text-center">Edit work report of {{ report.resource_name }}</h4>
+    <form action="/edit-work-report/{{ report.id }}" method="post" class="p-2 border">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="EmpCode" class="form-label">Emp Code</label>
+            <input type="text" class="form-control" id="EmpCode" name="emp_code" value="{{ report.emp_code }}">
+        </div>
+        <div class="mb-3">
+            <label for="ResourceName" class="form-label">Resource Name</label>
+            <input type="text" class="form-control" id="ResourceName" name="resource_name" value="{{ report.resource_name }}">
+        </div>
+        <div class="mb-3">
+            <label for="Skill" class="form-label">Skill</label>
+            <input type="text" class="form-control" id="Skill" name="skill" value="{{ report.skill }}">
+        </div>
+        <div class="mb-3">
+            <label for="ActualHours" class="form-label">Actual Hours</label>
+            <input type="text" class="form-control" id="ActualHours" name="actual_hours" value="{{ report.actual_hours }}">
+        </div>
+        <div class="mb-3">
+            <label for="Date" class="form-label">Date ({{ report.date }})</label>
+            <input type="Date" class="form-control" id="Date" name="date" value="{{ report.date }}">
+        </div>
+        <div class="mb-3">
+            <label for="WorkingDetail" class="form-label">Working Detail</label>
+            <input type="text" class="form-control" id="WorkingDetail" name="work_details" value="{{ report.work_details }}">
+        </div>
+        <div class="mb-3">
+            <label for="Remark" class="form-label">Remark</label>
+            <input type="text" class="form-control" id="Remark" name="remark" value="{{ report.remark }}">
+        </div>
+        <div class="mb-3">
+            <label for="Clients" class="form-label">Clients</label>
+            <input type="text" class="form-control" id="Clients" name="clients" value="{{ report.clients }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endfor %}
+{% endblock %}
