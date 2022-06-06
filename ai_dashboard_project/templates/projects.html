@@ -14,7 +14,7 @@
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <table class="table  border-start border-bottom border-end" style="font-size: 1.7vh;">
+            <table class="table  border-start border-bottom border-end" style="font-size: 2.2vh;">
                 <thead>
                     <tr>
                         <th scope="col">Project Name</th>
@@ -36,7 +36,7 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="proj_query" value="proj_query">
                                 <input type="hidden" name="proj_name" value="{{ proj.proj_name }}">
-                                <button type="submit" class="text-primary">{{ proj.proj_name }}</button>
+                                <button type="submit" class="text-primary btn">{{ proj.proj_name }}</button>
                             </form>
                             </th>
                         <td>{{ proj.proj_status }}</td>
